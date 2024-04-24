@@ -33,8 +33,10 @@ jobs:
       - name: Deploy to production
         uses: easingthemes/ssh-deploy@v2
         with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           REMOTE_HOST: 192.168.14.155
           REMOTE_USER: isrdds
-          PASSWORD: labisr2020
           SOURCE: dist
           TARGET: /home/isrdds/appsku
+          REMOTE_PORT: 22
+          ARGS: -rltgoDzvO
