@@ -1,7 +1,7 @@
 // app.test.js
 const sayHello = require("./app");
 
-test("returns the correct greeting", () => {
+test("kelmbalikan salam yang benar", () => {
   const result = sayHello();
-  expect(result).toBe("Hello, world!");
+  expect(result).toBe("hello, world!");
 });
