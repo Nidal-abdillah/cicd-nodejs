@@ -1,4 +1,4 @@
-name: Node.js CI/CD with Docker
+name: Node.js CI/CD
 
 on:
   push:
@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -23,27 +22,10 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-      - name: Build Docker image
-        run: |
-          docker build -t nidalabdillah/tes-deploy .
-          docker tag nidalabdillah/tes-deploy nidalabdillah/tes-deploy:v1
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push Docker image to Docker Hub
-        run: |
-          docker push nidalabdillah/tes-deploy:v1
-          docker push nidalabdillah/tes-deploy:latest
+      - name: build and push docker image
+uses: mr-smithers-excellent/docker-build-push@v4
+with:
+  image: nidalabdillah/tes-deploy
+  registry: docker.io
+  username: ${{ secrets.DOCKER_USERNAME }}
+  password: ${{ secrets.DOCKER_PASSWORD }}
